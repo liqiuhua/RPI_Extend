@@ -1,9 +1,9 @@
 .\objects\queue.o: FreeRTOSv10.2.1\FreeRTOS\Source\queue.c
-.\objects\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\queue.o: .\FreeRTOSv10.2.1\FreeRTOS\Source\include\FreeRTOS.h
-.\objects\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\queue.o: .\USER\FreeRTOSConfig.h
 .\objects\queue.o: .\FreeRTOSv10.2.1\FreeRTOS\Source\include\projdefs.h
 .\objects\queue.o: .\FreeRTOSv10.2.1\FreeRTOS\Source\include\portable.h

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\RPI_Extend.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\RPI_Extend.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Aug 17 14:33:46 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Aug 20 18:25:50 2019
 <BR><P>
 <H3>Maximum Stack Usage =        416 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1130,7 +1130,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RGB_LED_init
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NumDisplayInit
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DebugUart
 </UL>
 
@@ -1141,20 +1142,20 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[b6]"></a>GPIO_ResetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_ResetBits))
-<BR><BR>[Called By]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
+<BR><BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AIPcommand
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AIP_send_8bit
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RGB_LED_Set
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
 <P><STRONG><a name="[b5]"></a>GPIO_SetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_SetBits))
-<BR><BR>[Called By]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
+<BR><BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Write
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AIPcommand
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AIP_send_8bit
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RGB_LED_Set
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
 <P><STRONG><a name="[c7]"></a>LED_Write</STRONG> (Thumb, 104 bytes, Stack size 32 bytes, numdisplay.o(i.LED_Write))
@@ -1173,13 +1174,23 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DebugUart
 </UL>
 
-<P><STRONG><a name="[c8]"></a>OLED_Clear</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, oled.o(i.OLED_Clear))
+<P><STRONG><a name="[c8]"></a>NumDisplayInit</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, numdisplay.o(i.NumDisplayInit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = NumDisplayInit &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AIPcommand
+</UL>
+<BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDisplayStart
+</UL>
+
+<P><STRONG><a name="[c9]"></a>OLED_Clear</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, oled.o(i.OLED_Clear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = OLED_Clear &rArr; OLED_Refresh_Gram &rArr; OLED_WR_Byte
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh_Gram
+<BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh_Gram
 </UL>
-<BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<BR>[Called By]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
 <P><STRONG><a name="[cf]"></a>OLED_DrawPoint</STRONG> (Thumb, 100 bytes, Stack size 20 bytes, oled.o(i.OLED_DrawPoint))
@@ -1188,26 +1199,29 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar
 </UL>
 
-<P><STRONG><a name="[ca]"></a>OLED_Init</STRONG> (Thumb, 298 bytes, Stack size 8 bytes, oled.o(i.OLED_Init))
+<P><STRONG><a name="[cb]"></a>OLED_Init</STRONG> (Thumb, 368 bytes, Stack size 8 bytes, oled.o(i.OLED_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = OLED_Init &rArr; OLED_ShowString &rArr; OLED_ShowChar &rArr; OLED_DrawPoint
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WrCmd
-<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Clear
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Clear
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
+<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh_Gram
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDisplayStart
 </UL>
 
-<P><STRONG><a name="[c9]"></a>OLED_Refresh_Gram</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, oled.o(i.OLED_Refresh_Gram))
+<P><STRONG><a name="[ca]"></a>OLED_Refresh_Gram</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, oled.o(i.OLED_Refresh_Gram))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = OLED_Refresh_Gram &rArr; OLED_WR_Byte
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
+<BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Clear
+<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Clear
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDisplayStart
 </UL>
 
 <P><STRONG><a name="[ce]"></a>OLED_ShowChar</STRONG> (Thumb, 254 bytes, Stack size 40 bytes, oled.o(i.OLED_ShowChar))
@@ -1215,34 +1229,27 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_DrawPoint
 </UL>
-<BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
+<BR>[Called By]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
 </UL>
 
-<P><STRONG><a name="[cc]"></a>OLED_ShowString</STRONG> (Thumb, 94 bytes, Stack size 24 bytes, oled.o(i.OLED_ShowString))
+<P><STRONG><a name="[cd]"></a>OLED_ShowString</STRONG> (Thumb, 94 bytes, Stack size 24 bytes, oled.o(i.OLED_ShowString))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = OLED_ShowString &rArr; OLED_ShowChar &rArr; OLED_DrawPoint
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Clear
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Clear
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<BR>[Called By]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDisplayStart
 </UL>
 
-<P><STRONG><a name="[cd]"></a>OLED_WR_Byte</STRONG> (Thumb, 118 bytes, Stack size 16 bytes, oled.o(i.OLED_WR_Byte))
+<P><STRONG><a name="[cc]"></a>OLED_WR_Byte</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, oled.o(i.OLED_WR_Byte))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = OLED_WR_Byte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 </UL>
-<BR>[Called By]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WrCmd
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh_Gram
-</UL>
-
-<P><STRONG><a name="[cb]"></a>OLED_WrCmd</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, oled.o(i.OLED_WrCmd))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = OLED_WrCmd &rArr; OLED_WR_Byte
-</UL>
-<BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
-</UL>
-<BR>[Called By]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<BR>[Called By]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh_Gram
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
 <P><STRONG><a name="[d8]"></a>RCC_APB1PeriphResetCmd</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_rcc.o(i.RCC_APB1PeriphResetCmd))
@@ -1251,7 +1258,8 @@ Global Symbols
 
 <P><STRONG><a name="[bf]"></a>RCC_APB2PeriphClockCmd</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd))
 <BR><BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RGB_LED_init
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NumDisplayInit
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DebugUart
 </UL>
 
@@ -1466,7 +1474,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDisplayStart
 </UL>
 
-<P><STRONG><a name="[50]"></a>vTaskDisplayStart</STRONG> (Thumb, 126 bytes, Stack size 0 bytes, main.o(i.vTaskDisplayStart))
+<P><STRONG><a name="[50]"></a>vTaskDisplayStart</STRONG> (Thumb, 182 bytes, Stack size 0 bytes, main.o(i.vTaskDisplayStart))
 <BR><BR>[Stack]<UL><LI>Max Depth = 416 + Unknown Stack Size
 <LI>Call Chain = vTaskDisplayStart &rArr; DebugPrintf &rArr; vsnprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -1474,7 +1482,10 @@ Global Symbols
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RGB_LED_init
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RGB_LED_Set
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
+<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh_Gram
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NumDisplayInit
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DebugUart
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DebugPrintf
 </UL>
@@ -1627,6 +1638,7 @@ Local Symbols
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AIP_send_8bit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Write
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NumDisplayInit
 </UL>
 
 <P><STRONG><a name="[dc]"></a>prvAddCurrentTaskToDelayedList</STRONG> (Thumb, 124 bytes, Stack size 24 bytes, tasks.o(i.prvAddCurrentTaskToDelayedList))

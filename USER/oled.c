@@ -3,25 +3,24 @@
 #include "oledfont.h"  	 
 
 #include "stm32f10x.h"
-
-#define OLED_MODE 0
+#include "Debug.h"
 		    						  
 //-----------------OLED端口定义----------------  				
 
-#define OLED_CS_SET() GPIO_SetBits(GPIOB,GPIO_Pin_12)
-#define OLED_CS_RESET() GPIO_ResetBits(GPIOB,GPIO_Pin_12)
+#define OLED_CS_SET()       GPIO_SetBits(GPIOB,GPIO_Pin_12)
+#define OLED_CS_RESET()     GPIO_ResetBits(GPIOB,GPIO_Pin_12)
 
-#define OLED_SCLK_SET() GPIO_SetBits(GPIOB,GPIO_Pin_13)
-#define OLED_SCLK_RESET() GPIO_ResetBits(GPIOB,GPIO_Pin_13)
+#define OLED_SCLK_SET()     GPIO_SetBits(GPIOB,GPIO_Pin_13)
+#define OLED_SCLK_RESET()   GPIO_ResetBits(GPIOB,GPIO_Pin_13)
 
-#define OLED_RST_SET() GPIO_SetBits(GPIOB,GPIO_Pin_15)
-#define OLED_RST_RESET() GPIO_ResetBits(GPIOB,GPIO_Pin_15)
+#define OLED_RST_SET()      GPIO_SetBits(GPIOB,GPIO_Pin_15)
+#define OLED_RST_RESET()    GPIO_ResetBits(GPIOB,GPIO_Pin_15)
 
-#define OLED_DC_SET() GPIO_SetBits(GPIOB,GPIO_Pin_14)
-#define OLED_DC_RESET() GPIO_ResetBits(GPIOB,GPIO_Pin_14)
+#define OLED_DC_SET()       GPIO_SetBits(GPIOB,GPIO_Pin_14)
+#define OLED_DC_RESET()     GPIO_ResetBits(GPIOB,GPIO_Pin_14)
 
-#define OLED_D1_SET() GPIO_SetBits(GPIOC,GPIO_Pin_3)
-#define OLED_D1_RESET() GPIO_ResetBits(GPIOC,GPIO_Pin_3)
+#define OLED_D1_SET()       GPIO_SetBits(GPIOC,GPIO_Pin_3)
+#define OLED_D1_RESET()     GPIO_ResetBits(GPIOC,GPIO_Pin_3)
 
 
 		     
@@ -63,7 +62,8 @@ void OLED_WR_Byte(uint8_t dat,uint8_t cmd)
 	uint8_t i;			  
 
     cmd>0?OLED_DC_SET():OLED_DC_RESET();
-    
+     nop();
+        nop();
     OLED_SCLK_RESET();    
 	for(i=0;i<8;++i)
 	{			  
@@ -208,10 +208,6 @@ void OLED_ShowString(uint8_t x,uint8_t y,const uint8_t *p,uint8_t size)
     }  
 	
 }	
-void OLED_WrCmd(uint8_t dat)
-{
-    OLED_WR_Byte(dat,OLED_CMD);
-}
 //初始化SSD1306					    
 void OLED_Init(void)
 { 	 				 	 					    
@@ -232,78 +228,59 @@ void OLED_Init(void)
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 		
 
-        OLED_SCLK_SET();
-        OLED_CS_RESET();
+    OLED_SCLK_SET();
+    OLED_D1_SET();
+    OLED_DC_SET();
 
-        OLED_RST_RESET();
-        nop();
-        nop();
-        nop();
-        nop();
-        OLED_RST_SET();  
+    OLED_CS_RESET();
+
+    OLED_RST_RESET();
+    for(uint16_t i=0;i<10000;i++)
+    {
+    nop();
+    nop();
+    nop();
+    nop();
+    }
+    OLED_RST_SET();  
         
         
-//	OLED_WR_Byte(0xAE,OLED_CMD); //关闭显示
-//	OLED_WR_Byte(0xD5,OLED_CMD); //设置时钟分频因子,震荡频率
-//	OLED_WR_Byte(80,OLED_CMD);   //[3:0],分频因子;[7:4],震荡频率
-//	OLED_WR_Byte(0xA8,OLED_CMD); //设置驱动路数
-//	OLED_WR_Byte(0X3F,OLED_CMD); //默认0X3F(1/64) 
-//	OLED_WR_Byte(0xD3,OLED_CMD); //设置显示偏移
-//	OLED_WR_Byte(0X00,OLED_CMD); //默认为0
+	OLED_WR_Byte(0xAE,OLED_CMD); //关闭显示
+	OLED_WR_Byte(0xD5,OLED_CMD); //设置时钟分频因子,震荡频率
+	OLED_WR_Byte(80,OLED_CMD);   //[3:0],分频因子;[7:4],震荡频率
+	OLED_WR_Byte(0xA8,OLED_CMD); //设置驱动路数
+	OLED_WR_Byte(0X3F,OLED_CMD); //默认0X3F(1/64) 
+	OLED_WR_Byte(0xD3,OLED_CMD); //设置显示偏移
+	OLED_WR_Byte(0X00,OLED_CMD); //默认为0
 
-//	OLED_WR_Byte(0x40,OLED_CMD); //设置显示开始行 [5:0],行数.
-//													    
-//	OLED_WR_Byte(0x8D,OLED_CMD); //电荷泵设置
-//	OLED_WR_Byte(0x14,OLED_CMD); //bit2，开启/关闭
-//	OLED_WR_Byte(0x20,OLED_CMD); //设置内存地址模式
-//	OLED_WR_Byte(0x02,OLED_CMD); //[1:0],00，列地址模式;01，行地址模式;10,页地址模式;默认10;
-//	OLED_WR_Byte(0xA1,OLED_CMD); //段重定义设置,bit0:0,0->0;1,0->127;
-//	OLED_WR_Byte(0xC0,OLED_CMD); //设置COM扫描方向;bit3:0,普通模式;1,重定义模式 COM[N-1]->COM0;N:驱动路数
-//	OLED_WR_Byte(0xDA,OLED_CMD); //设置COM硬件引脚配置
-//	OLED_WR_Byte(0x12,OLED_CMD); //[5:4]配置
-//		 
-//	OLED_WR_Byte(0x81,OLED_CMD); //对比度设置
-//	OLED_WR_Byte(0xEF,OLED_CMD); //1~255;默认0X7F (亮度设置,越大越亮)
-//	OLED_WR_Byte(0xD9,OLED_CMD); //设置预充电周期
-//	OLED_WR_Byte(0xf1,OLED_CMD); //[3:0],PHASE 1;[7:4],PHASE 2;
-//	OLED_WR_Byte(0xDB,OLED_CMD); //设置VCOMH 电压倍率
-//	OLED_WR_Byte(0x30,OLED_CMD); //[6:4] 000,0.65*vcc;001,0.77*vcc;011,0.83*vcc;
+	OLED_WR_Byte(0x40,OLED_CMD); //设置显示开始行 [5:0],行数.
+													    
+	OLED_WR_Byte(0x8D,OLED_CMD); //电荷泵设置
+	OLED_WR_Byte(0x14,OLED_CMD); //bit2，开启/关闭
+	OLED_WR_Byte(0x20,OLED_CMD); //设置内存地址模式
+	OLED_WR_Byte(0x02,OLED_CMD); //[1:0],00，列地址模式;01，行地址模式;10,页地址模式;默认10;
+      /*更改下面两项参数可以更改显示屏的显示方向，显示对称方向*/  
+	OLED_WR_Byte(0xA0,OLED_CMD); //段重定义设置,bit0:0,0->0;1,0->127;
+	OLED_WR_Byte(0xC8,OLED_CMD); //设置COM扫描方向;bit3:0,普通模式;1,重定义模式 COM[N-1]->COM0;N:驱动路数
+	
+    OLED_WR_Byte(0xDA,OLED_CMD); //设置COM硬件引脚配置
+	OLED_WR_Byte(0x12,OLED_CMD); //[5:4]配置
+		 
+	OLED_WR_Byte(0x81,OLED_CMD); //对比度设置
+	OLED_WR_Byte(0xEF,OLED_CMD); //1~255;默认0X7F (亮度设置,越大越亮)
+	OLED_WR_Byte(0xD9,OLED_CMD); //设置预充电周期
+	OLED_WR_Byte(0xf1,OLED_CMD); //[3:0],PHASE 1;[7:4],PHASE 2;
+	OLED_WR_Byte(0xDB,OLED_CMD); //设置VCOMH 电压倍率
+	OLED_WR_Byte(0x30,OLED_CMD); //[6:4] 000,0.65*vcc;001,0.77*vcc;011,0.83*vcc;
 
-//	OLED_WR_Byte(0xA4,OLED_CMD); //全局显示开启;bit0:1,开启;0,关闭;(白屏/黑屏)
-//	OLED_WR_Byte(0xA6,OLED_CMD); //设置显示方式;bit0:1,反相显示;0,正常显示	    						   
-//	OLED_WR_Byte(0xAF,OLED_CMD); //开启显示	 
-    
-      OLED_WrCmd(0xae);//--turn off oled panel
-  OLED_WrCmd(0x00);//---set low column address
-  OLED_WrCmd(0x10);//---set high column address
-  OLED_WrCmd(0x40);//--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
-  OLED_WrCmd(0x81);//--set contrast control register
-  OLED_WrCmd(0xcf); // Set SEG Output Current Brightness
-  OLED_WrCmd(0xa1);//--Set SEG/Column Mapping     0xa0左右反置 0xa1正常
-  OLED_WrCmd(0xc8);//Set COM/Row Scan Direction   0xc0上下反置 0xc8正常
-  OLED_WrCmd(0xa6);//--set normal display
-  OLED_WrCmd(0xa8);//--set multiplex ratio(1 to 64)
-  OLED_WrCmd(0x3f);//--1/64 duty
-  OLED_WrCmd(0xd3);//-set display offset	Shift Mapping RAM Counter (0x00~0x3F)
-  OLED_WrCmd(0x00);//-not offset
-  OLED_WrCmd(0xd5);//--set display clock divide ratio/oscillator frequency
-  OLED_WrCmd(0x80);//--set divide ratio, Set Clock as 100 Frames/Sec
-  OLED_WrCmd(0xd9);//--set pre-charge period
-  OLED_WrCmd(0xf1);//Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
-  OLED_WrCmd(0xda);//--set com pins hardware configuration
-  OLED_WrCmd(0x12);
-  OLED_WrCmd(0xdb);//--set vcomh
-  OLED_WrCmd(0x40);//Set VCOM Deselect Level
-  OLED_WrCmd(0x20);//-Set Page Addressing Mode (0x00/0x01/0x02)
-  OLED_WrCmd(0x02);//
-  OLED_WrCmd(0x8d);//--set Charge Pump enable/disable
-  OLED_WrCmd(0x14);//--set(0x10) disable
-  OLED_WrCmd(0xa4);// Disable Entire Display On (0xa4/0xa5)
-  OLED_WrCmd(0xa6);// Disable Inverse Display On (0xa6/a7)
-  OLED_WrCmd(0xaf);//--turn on oled panel
-  
+	OLED_WR_Byte(0xA4,OLED_CMD); //全局显示开启;bit0:1,开启;0,关闭;(白屏/黑屏)
+	OLED_WR_Byte(0xA6,OLED_CMD); //设置显示方式;bit0:1,反相显示;0,正常显示	    						   
+	OLED_WR_Byte(0xAF,OLED_CMD); //开启显示	 
+
 	OLED_Clear();
-    OLED_ShowString(2,2,(uint8_t *)"Rpi extend",10);
+    
+    OLED_ShowString(2,2,(uint8_t *)"Rpi extend",16);
+    OLED_Refresh_Gram();//此函数是更新显示是必须的，每次刷新显示使用此
 }  
 
 
