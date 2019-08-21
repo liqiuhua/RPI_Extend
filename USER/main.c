@@ -20,7 +20,7 @@ int main(void)
   AppTaskCreate ();  
     
     /* 启动调度， 开始执行任务 */
-    vTaskStartScheduler();
+    vTaskStartScheduler();    
     
     while(1)
     {
@@ -30,7 +30,7 @@ static void AppTaskCreate (void)
 {
         xTaskCreate( vTaskDisplayStart,     		/* 任务函数  */
                  "vSystemDebugStart",   		/* 任务名    */
-                 64,            		/* 任务栈大小，单位word，也就是4字节 */
+                 128,            		/* 任务栈大小，单位word，也就是4字节 */
                  NULL,           		/* 任务参数  */
                  10,              		/* 任务优先级*/
                  NULL );   /* 任务句柄  */

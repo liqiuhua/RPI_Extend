@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\RPI_Extend.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\RPI_Extend.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Aug 20 18:25:50 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Aug 21 14:24:00 2019
 <BR><P>
 <H3>Maximum Stack Usage =        416 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1158,7 +1158,7 @@ Global Symbols
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
-<P><STRONG><a name="[c7]"></a>LED_Write</STRONG> (Thumb, 104 bytes, Stack size 32 bytes, numdisplay.o(i.LED_Write))
+<P><STRONG><a name="[c7]"></a>LED_Write</STRONG> (Thumb, 80 bytes, Stack size 32 bytes, numdisplay.o(i.LED_Write))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = LED_Write &rArr; AIPcommand &rArr; AIP_send_8bit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
@@ -1375,8 +1375,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__printf
 </UL>
 
-<P><STRONG><a name="[da]"></a>display</STRONG> (Thumb, 30 bytes, Stack size 16 bytes, numdisplay.o(i.display))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = display &rArr; LED_Write &rArr; AIPcommand &rArr; AIP_send_8bit
+<P><STRONG><a name="[da]"></a>display</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, numdisplay.o(i.display))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = display &rArr; LED_Write &rArr; AIPcommand &rArr; AIP_send_8bit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Write
 </UL>
