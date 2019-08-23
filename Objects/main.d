@@ -49,3 +49,4 @@
 .\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: USER\oled.h
 .\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\main.o: USER\PWM_out_in.h
