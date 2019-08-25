@@ -279,7 +279,7 @@ void OLED_Init(void)
 
 	OLED_Clear();
     
-    OLED_ShowString(2,2,(uint8_t *)"Rpi extend",16);
+    OLED_ShowString(0,0,(uint8_t *)"Hello Rpi extend",16);
     OLED_Refresh_Gram();//此函数是更新显示是必须的，每次刷新显示使用此
 }  
 

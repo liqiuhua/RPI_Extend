@@ -525,6 +525,16 @@
               <FileType>1</FileType>
               <FilePath>.\USER\main.c</FilePath>
             </File>
+            <File>
+              <FileName>RCCar.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\USER\RCCar.h</FilePath>
+            </File>
+            <File>
+              <FileName>RCCar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\RCCar.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -599,6 +609,16 @@
               <FileName>oled.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\USER\oled.h</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\ADC.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\USER\ADC.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -9,8 +9,11 @@
 #include "NumDisplay.h"
 #include "oled.h"
 #include "PWM_out_in.h"
+#include "RCCar.h"
+#include "KEY.h"
+#include "ADC.h"
 static void AppTaskCreate (void);
-void vTaskDisplayStart(void *pvParameters);
+void vInteractionStart(void *pvParameters);
 int main(void)
 {
     SystemInit();
@@ -28,84 +31,97 @@ int main(void)
 }
 static void AppTaskCreate (void)
 {
-        xTaskCreate( vTaskDisplayStart,     		/* 任务函数  */
-                 "vSystemDebugStart",   		/* 任务名    */
-                 128,            		/* 任务栈大小，单位word，也就是4字节 */
-                 NULL,           		/* 任务参数  */
-                 10,              		/* 任务优先级*/
-                 NULL );   /* 任务句柄  */
+		DebugUart(115200);
+
     
-//            xTaskCreate( vTask485,     		/* 任务函数  */
-//                 "vTask485",   		/* 任务名    */
-//                 64,            		/* 任务栈大小，单位word，也就是4字节 */
-//                 NULL,           		/* 任务参数  */
-//                 15,              		/* 任务优先级*/
-//                 NULL );   /* 任务句柄  */
-//        xTaskCreate( vTaskBattery,     		/* 任务函数  */
-//                 "vSystemNumDisplay",   		/* 任务名    */
-//                 256,            		/* 任务栈大小，单位word，也就是4字节 */
-//                 NULL,           		/* 任务参数  */
-//                 25,              		/* 任务优先级*/
-//                 &xHandleTaskBattery );   /* 任务句柄  */
-//        xTaskCreate( vTaskKey,     		/* 任务函数  */
-//                 "vTaskKey",   		/* 任务名    */
-//                 64,            		/* 任务栈大小，单位word，也就是4字节 */
-//                 NULL,           		/* 任务参数  */
-//                 27,              		/* 任务优先级*/
-//                 &xHandleTaskKey );   /* 任务句柄  */
+        xTaskCreate( vRCStart,     		/* 任务函数  */
+                 "vRCStart",   		/* 任务名    */
+                 512,            		/* 任务栈大小，单位word，也就是4字节 */
+                 NULL,           		/* 任务参数  */
+                 20,              		/* 任务优先级*/
+                 &xHandleTaskRC );   /* 任务句柄  */
+                 
+        xTaskCreate( vInteractionStart,     		/* 任务函数  */
+                 "vInteractionStart",   		/* 任务名    */
+                 512,            		/* 任务栈大小，单位word，也就是4字节 */
+                 NULL,           		/* 任务参数  */
+                 12,              		/* 任务优先级*/
+                 NULL );   /* 任务句柄  */
 
 }
-
-void vTaskDisplayStart(void *pvParameters)
+void vInteractionStart(void *pvParameters)
 {
-    DebugUart(115200);
-    RGB_LED_init();
+
+        RGB_LED_init();
     RGB_LED_Set(0,0,0);
-    uint32_t RGB_data=0;
     DebugPrintf("Hello RPI\n");
     NumDisplayInit();
-    display();
+    display(0);
     OLED_Init();
-    PWM_OUT_1_4_Init();
-    PWM_OUT_5_8_Init();
-    PWM_IN_1_4_Init();
-    PWM_IN_5_8_Init();
-    
-    PWM_OUT_5_8_out(0xff,800);
+    KEY_Init();
+    ADC1_Init();
+    uint8_t key_value=0;
+    uint16_t count=0;
+    uint8_t GUI_Page=0;
     while(1)
     {
-         vTaskDelay(2000);
-//          RGB_data++;
-//          switch(RGB_data%3)
-//          {
-//              case 0:
-//                  RGB_LED_Set(1,0,0);
-//                    OLED_ShowString(2,2,(uint8_t *)"ST RGB R    ",16);
-//                
-//                  break;
-//              case 1:
-//                  RGB_LED_Set(0,1,0);
-//                    OLED_ShowString(2,2,(uint8_t *)"ST RGB G    ",16);
-//                  break;
-//              case 2:
-//                  RGB_LED_Set(0,0,1);
-//                    OLED_ShowString(2,2,(uint8_t *)"ST RGB B    ",16);
-//                  break;
-//              default:
-//                  RGB_data=0;
-//                  RGB_LED_Set(0,0,0);
-//                OLED_ShowString(2,2,(uint8_t *)"ST RGB OFF ",16);
-//                  break;
-//          }
-           OLED_ShowNum( 2,18, getPWM_IN_1_4_ICValue(3),8,12);
-           OLED_ShowNum( 2,28, getPWM_IN_1_4_ICValue(2),8,12);
-           OLED_ShowNum( 2,38, getPWM_IN_1_4_ICValue(1),8,12);
-           OLED_ShowNum( 2,48, getPWM_IN_1_4_ICValue(0),8,12);
-           OLED_ShowNum( 70,18, getPWM_IN_5_8_ICValue(0),8,12);
-           OLED_ShowNum( 70,28, getPWM_IN_5_8_ICValue(1),8,12);
-           OLED_ShowNum( 70,38, getPWM_IN_5_8_ICValue(2),8,12);
-           OLED_ShowNum( 70,48, getPWM_IN_5_8_ICValue(3),8,12);
-           OLED_Refresh_Gram();         
+        vTaskDelay(5);
+        count++;
+        key_value=getKeyStatus();
+        if(key_value!=0)
+        {
+             if(key_value&KEY_THREE_CLICK)
+            {
+                if(GUI_Page>=2){GUI_Page=2;}
+                else{GUI_Page++;}                                 
+  
+            }
+            if(key_value&KEY_FOUR_CLICK)
+            {
+                if(GUI_Page<=1){GUI_Page=0;}  
+                else{ GUI_Page--;}
+                                  
+  
+            }
+        }		
+        if(count>200)
+        {
+            count=0;
+            if(GUI_Page==1){
+               OLED_ShowString(0,0,(uint8_t *)"RC Control data",32);
+               OLED_ShowNum( 2,18, getPWM_IN_1_4_ICValue(3),8,12);
+               OLED_ShowNum( 2,28, getPWM_IN_1_4_ICValue(2),8,12);
+               OLED_ShowNum( 2,38, getPWM_IN_1_4_ICValue(1),8,12);
+               OLED_ShowNum( 2,48, getPWM_IN_1_4_ICValue(0),8,12);
+               OLED_ShowNum( 70,18, getPWM_IN_5_8_ICValue(0),8,12); 
+               OLED_ShowNum( 70,28, getPWM_IN_5_8_ICValue(2),8,12);
+               OLED_ShowNum( 70,38, getPWM_IN_5_8_ICValue(3),8,12);
+               OLED_ShowNum( 70,48, getPWM_IN_5_8_ICValue(1),8,12);
+            }else if(GUI_Page==2)
+            {
+               OLED_ShowString(0,0,(uint8_t *)"RC Car output data",32);
+               OLED_ShowNum( 2,18, getRCControlData(THROTTLE_CH),8,12);
+               OLED_ShowNum( 2,28, getRCControlData(LEFT_CH),8,12);
+               OLED_ShowNum( 2,38, getRCControlData(RIGHT_CH),8,12);
+               OLED_ShowNum( 2,48, getRCControlData(TRAVEL_DIRECTION_CH),8,12);
+//               OLED_ShowNum( 70,18, getPWM_IN_5_8_ICValue(0),8,12); 
+//               OLED_ShowNum( 70,28, getPWM_IN_5_8_ICValue(2),8,12);
+//               OLED_ShowNum( 70,38, getPWM_IN_5_8_ICValue(3),8,12);
+//               OLED_ShowNum( 70,48, getPWM_IN_5_8_ICValue(1),8,12);
+            }else 
+            {
+                
+            }
+           OLED_Refresh_Gram();  
+            display(getVoltage());
+
+            
+            
+        }
+				
 
     }
+
 }
+
+

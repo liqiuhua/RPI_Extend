@@ -5,6 +5,6 @@
 #include "stdio.h"
 
 void NumDisplayInit(void);
-void display(void);
+void display(uint16_t num);
 #endif
 

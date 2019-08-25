@@ -50,3 +50,6 @@
 .\objects\main.o: USER\oled.h
 .\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\main.o: USER\PWM_out_in.h
+.\objects\main.o: USER\RCCar.h
+.\objects\main.o: USER\KEY.h
+.\objects\main.o: USER\ADC.h

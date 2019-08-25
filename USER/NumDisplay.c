@@ -96,10 +96,14 @@ void LED_Write(uint8_t bTimeMorphology0,uint8_t bTimeMorphology1,uint8_t bTimeMo
 	  AIPcommand(0x8b); //显示控制命令，打开显示并设置为最亮 
 	   STB_SET();//STB=1
 }
-void display(void)
+void display(uint16_t num)
+	
 {      
-	  uint16_t j;
-	  LED_Write(Num_seg[2],Num_seg[3],Num_seg[4],Num_seg[5]);
+	if(num>9999)
+	{
+		num=0000;
+	}
+	  LED_Write(Num_seg[num/1000],Num_seg[num/100%10],Num_seg[num/10%10],Num_seg[num%10]);
      
 }
 
